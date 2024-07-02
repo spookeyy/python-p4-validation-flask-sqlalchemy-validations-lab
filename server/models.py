@@ -26,7 +26,7 @@ class Author(db.Model):
             raise ValueError('Phone number must be 10 digits')
         return phone_number
     
-    
+
     def __repr__(self):
         return f'Author(id={self.id}, name={self.name})'
 
@@ -42,6 +42,36 @@ class Post(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     # Add validators  
+    @validates('title')
+    def validate_title(self, key, title):
+        if not title:
+            raise ValueError('Post title is required')
+        clickbait_words = ["Top", "Guess", "You Won't Believe", "Secret"]
+        if any(word in title for word in clickbait_words):
+            raise ValueError("Title contains clickbait words")
+        return title
+    
+
+    @validates('content')
+    def validate_content(self, key, content):
+        if len(content) < 250:
+            raise ValueError("Content must be at least 250 characters")
+        return content
+    
+
+    @validates('summary')
+    def validate_summary(self, key, summary):
+        if len(summary) > 250:
+            raise ValueError("Summary must not exceed 250 characters")
+        return summary
+    
+
+    @validates('category')
+    def validate_category(self, key, category):
+        valid_categories = ['Fiction', 'Non-Fiction']
+        if category not in valid_categories:
+            raise ValueError("Invalid category")
+        return category
 
 
     def __repr__(self):
