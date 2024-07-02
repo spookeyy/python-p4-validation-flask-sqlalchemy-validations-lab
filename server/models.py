@@ -45,7 +45,7 @@ class Post(db.Model):
         if not title:
             raise ValueError('Post title is required')
         
-        # clickbait_phrases = ["Top", "Guess", "You Won't Believe", "Secret"]
+        # clickbait_phrases = ["Top", "Guess", "Won't Believe", "Secret"]
         # if any(phrase.lower() in title.lower() for phrase in clickbait_phrases):
         #     raise ValueError("Title contains clickbait words")
         return title
